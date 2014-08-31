@@ -24,14 +24,19 @@ int main(){
     for(;i<LEN;++i){
         Demo_t d = (Demo_t)malloc(sizeof(Demo_st));
         d->level = rand()%100;
-        *(src+i) =d;
+        *(src+i) = d;
     }
 
     sort_bubble((void**)src,LEN,demo_compare);
 
     for(i=0;i<LEN;++i){
-        printf("%d\n", (*(src+i))->level);
+        printf("%d ", (*(src+i))->level);
+        free(*(src+i));
     }
+
+    printf("\n");
+
+    free(src);
     
     return 0;
 }
