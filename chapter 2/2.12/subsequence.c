@@ -30,19 +30,63 @@ int maxSubSum(const int *src,int left,int right){
             maxRightBorderSum = rightBorderSum;
     }
 
-    return (int)MAX((maxLeftBorderSum + maxRightBorderSum), MAX(maxLeftSum, maxRightSum));
+    return MAX((maxLeftBorderSum + maxRightBorderSum), MAX(maxLeftSum, maxRightSum));
 }
 
-//最大子序列的和-O(NlogN)
+//最大子序列的和--O(N*logN)
 int maxSubsequenceSum(const int *src, int len){
-    return maxSubSum(src, 0, len-1);
+    return maxSubSum(src, 0, len - 1);
+}
+//最大子序列的和--O(N*N)
+int maxSubsequenceSum2(const int *src, int len){
+    int i, j;
+    int maxSum,lineSum;
+
+    if(len < 2){
+        return *src;
+    }
+
+    for(i = 0; i< len; ++i){
+        lineSum = *(src + i);
+        if(!i){maxSum = lineSum;}
+        if(lineSum > maxSum){maxSum = lineSum;}
+        for(j = 1 + i; j < len; ++j){
+            lineSum += *(src + j);
+            if(lineSum > maxSum){
+                maxSum = lineSum;
+            }
+        }
+    }
+    return maxSum;
+}
+//最大子序列的和--O(N)
+int maxSubsequenceSum3(const int *src, int len){
+    int i = 0;
+    int sum = 0, maxSum = 0;
+
+    if(len < 2){
+        return *src;
+    }
+
+    for(;i<len;++i){
+        sum += *(src + i);
+        if(sum > maxSum){
+            maxSum = sum;
+        }else if(sum < 0){
+            sum = 0;
+        }
+    }
+
+    return maxSum;
 }
 
 int main(int argc, char *argv[]){
 
-    int seq[] = {2, -3, 1, -3, 5, 7, 0, -1, 2, 3};
+    int seq[] = {5, -2, 1, -3, 7, -1, 0, -1, 2, -5};
 
     printf("%d\n", maxSubsequenceSum(seq, 10));
+    printf("%d\n", maxSubsequenceSum2(seq, 10));
+    printf("%d\n", maxSubsequenceSum3(seq, 10));
 
     return 0 ;
 }
