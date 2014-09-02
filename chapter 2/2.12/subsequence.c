@@ -80,13 +80,35 @@ int maxSubsequenceSum3(const int *src, int len){
     return maxSum;
 }
 
+//最小子序列的和--O(N)
+int minSubsequenceSum(const int *src, int len){
+    int i = 0;
+    int sum = 0, minSum = 0;
+
+    if(len < 2){
+        return *src;
+    }
+
+    for(;i<len;++i){
+        sum += *(src + i);
+        if(sum < minSum){
+            minSum = sum;
+        }else if(sum > 0){
+            sum = 0;
+        }
+    }
+
+    return minSum;
+}
+
 int main(int argc, char *argv[]){
 
-    int seq[] = {5, -2, 1, -3, 7, -1, 0, -1, 2, -5};
+    int seq[] = {5, -2, 1, -3, 2, -6, 0, -1, 2, -5};
 
     printf("%d\n", maxSubsequenceSum(seq, 10));
     printf("%d\n", maxSubsequenceSum2(seq, 10));
     printf("%d\n", maxSubsequenceSum3(seq, 10));
+    printf("%d\n", minSubsequenceSum(seq, 10));
 
     return 0 ;
 }
