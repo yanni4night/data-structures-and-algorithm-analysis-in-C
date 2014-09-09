@@ -111,7 +111,7 @@ int maxSubsequenceSum4(const int *src, int len){
     free(max);
     return maxSum;
 }
-//最小子序列的和--O(N)
+//最小子序列的和，时间--O(N)，空间--0
 int minSubsequenceSum(const int *src, int len){
     int i = 0;
     int sum = 0, minSum = 0;
@@ -135,7 +135,7 @@ int minSubsequenceSum(const int *src, int len){
     return minSum;
 }
 
-//最小正子序列的和--O(N)
+//最小正子序列的和，时间--O(N*N)，空间--0
 int minPosSubsequenceSum(const int *src, int len){
     int i, j;
     int minSum,lineSum;
@@ -158,6 +158,30 @@ int minPosSubsequenceSum(const int *src, int len){
         }
     }
     return MAX(minSum, 0);
+}
+
+//最小正子序列的和，时间--O(N*N)，空间--0
+int minPosSubsequenceSum2(const int *src, int len){
+    int minSum,lineSum;
+    int i,j;
+
+    minSum = *src;
+    for(i=1; i < len; ++i){
+        lineSum = *(src + i);
+        for(j=i-1; j >= 0; --j){
+            lineSum += *(src + j);
+            if(minSum <0){
+                minSum = lineSum;
+            }else if(lineSum > 0 && lineSum < minSum){
+                minSum = lineSum;
+            }
+        }
+        if(lineSum < minSum){
+            minSum = lineSum;
+        }
+    }
+
+    return MAX(0, minSum);
 }
 
 //最大子序列乘积，时间--O(N*N)，空间--0
@@ -194,9 +218,6 @@ int maxSubsequenceMul2(const int *src, int len){
     max = (int*)malloc(sizeof(int) * len);
     min = (int*)malloc(sizeof(int) * len);
 
-    free(max);
-    free(min);
-
     maxMul = *max = *min = *src;
     for(i=1; i < len; ++i){
         *(max + i) = MAX(*(src + i), MAX(*(src + i) * *(max + i -1),*(src + i)* *(min + i -1)));
@@ -207,12 +228,15 @@ int maxSubsequenceMul2(const int *src, int len){
         }
     }
 
+    free(max);
+    free(min);
+
     return maxMul;
 }
 
 int main(int argc, char *argv[]){
 
-    int seq[] = {5, 6, 4, -3, 7, -3, 9, -5, 8, 5}, LEN = 10;
+    int seq[] = {5, 6, 4, -5, 7, -3, 12, -5, 8, 5}, LEN = 10;
 
     printf("MAX SUM=%d\n", maxSubsequenceSum(seq, LEN));
     printf("MAX SUM=%d\n", maxSubsequenceSum2(seq, LEN));
@@ -220,6 +244,7 @@ int main(int argc, char *argv[]){
     printf("MAX SUM=%d\n", maxSubsequenceSum4(seq, LEN));
     printf("MIN SUM=%d\n", minSubsequenceSum(seq, LEN));
     printf("MIN PSUM=%d\n", minPosSubsequenceSum(seq, LEN));
+    printf("MIN PSUM=%d\n", minPosSubsequenceSum2(seq, LEN));
     printf("MAX MUL=%d\n", maxSubsequenceMul(seq, LEN));
     printf("MAX MUL=%d\n", maxSubsequenceMul2(seq, LEN));
 
