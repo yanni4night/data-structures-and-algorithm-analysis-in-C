@@ -40,7 +40,7 @@ int maxSubSum(const int *src,int left,int right){
 int maxSubsequenceSum(const int *src, int len){
     return maxSubSum(src, 0, len - 1);
 }
-//最大子序列的和--O(N*N)
+//最大子序列的和，时间--O(N*N)，空间--0
 int maxSubsequenceSum2(const int *src, int len){
     int i, j;
     int maxSum,lineSum;
@@ -137,59 +137,33 @@ int minSubsequenceSum(const int *src, int len){
 
 //最小正子序列的和--O(N)
 int minPosSubsequenceSum(const int *src, int len){
-    int i = 0;
-    int sum = 0, minSum = 0;
+    int i, j;
+    int minSum,lineSum;
 
     if(len < 2){
         return *src;
     }
 
     minSum = *src;
-    for(; i < len; ++i){
-        sum += *(src + i);
-        printf("%d=>%d\n", i,sum);
-        if(sum > 0){
-            printf("%d->%d\n",i,sum );
-            if(sum < minSum){
-                minSum = sum;
+    for(i = 0; i< len; ++i){
+        lineSum = *(src + i);
+        if(lineSum < minSum && lineSum > 0){
+            minSum = lineSum;
+        }
+        for(j = 1 + i; j < len; ++j){
+            lineSum += *(src + j);
+            if(lineSum < minSum && lineSum > 0){
+                minSum = lineSum;
             }
-            sum = 0;
-            printf("reset\n");
         }
     }
-
-    return minSum > 0 ? minSum : 0;
-}
-
-//最大子序列的积--O(N)
-float maxSubsequenceMul(const float *src, int len){
-    int i = 0; 
-    float mul = 0, maxMul = 0;
-
-    if(len < 2){
-        return *src;
-    }
-
-    for(; i < len; ++i){
-        mul *= *(src + i);
-        if(!i){
-            maxMul = mul;
-        }else if(mul > maxMul){
-            maxMul = mul;
-        }
-
-        if(mul > 0){
-            mul = 0;
-        }
-    }
-
-    return maxMul;
+    return MAX(minSum, 0);
 }
 
 int main(int argc, char *argv[]){
 
-    int seq[] = {5, -2, 1, 3, 2, -1, 0, -1, 2, -5};
-    //int seq[] = {5, 2, 4, 3, 2, 6, 9, 2, 2, 5};
+    //int seq[] = {5, -2, 1, 3, 2, -1, 0, -1, 2, -5};
+    int seq[] = {5, 6, 4, 3, 7, -3, 9, -5, 8, 5};
 
     printf("MAX Sub Sequence=%d\n", maxSubsequenceSum(seq, 10));
     printf("MAX Sub Sequence=%d\n", maxSubsequenceSum2(seq, 10));
