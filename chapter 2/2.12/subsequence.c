@@ -160,17 +160,41 @@ int minPosSubsequenceSum(const int *src, int len){
     return MAX(minSum, 0);
 }
 
+int maxSubsequenceMul(const int *src, int len){
+    int i, j;
+    int maxMul,lineMul;
+
+    if(len < 2){
+        return *src;
+    }
+
+    maxMul = *src;
+    for(i = 0; i< len; ++i){
+        lineMul = *(src + i);
+        if(lineMul > maxMul){
+            maxMul = lineMul;
+        }
+        for(j = 1 + i; j < len; ++j){
+            lineMul *= *(src + j);
+            if(lineMul > maxMul){
+                maxMul = lineMul;
+            }
+        }
+    }
+    return maxMul;
+}
+
 int main(int argc, char *argv[]){
 
-    //int seq[] = {5, -2, 1, 3, 2, -1, 0, -1, 2, -5};
-    int seq[] = {5, 6, 4, 3, 7, -3, 9, -5, 8, 5};
+    int seq[] = {5, 6, 4, -3, 7, -3, 9, -5, 8, 5}, LEN = 10;
 
-    printf("MAX Sub Sequence=%d\n", maxSubsequenceSum(seq, 10));
-    printf("MAX Sub Sequence=%d\n", maxSubsequenceSum2(seq, 10));
-    printf("MAX Sub Sequence=%d\n", maxSubsequenceSum3(seq, 10));
-    printf("MAX Sub Sequence=%d\n", maxSubsequenceSum4(seq, 10));
-    printf("MIN Sub Sequence=%d\n", minSubsequenceSum(seq, 10));
-    printf("MIN Positive Sub Sequence=%d\n", minPosSubsequenceSum(seq, 10));
+    printf("MAX SUM=%d\n", maxSubsequenceSum(seq, LEN));
+    printf("MAX SUM=%d\n", maxSubsequenceSum2(seq, LEN));
+    printf("MAX SUM=%d\n", maxSubsequenceSum3(seq, LEN));
+    printf("MAX SUM=%d\n", maxSubsequenceSum4(seq, LEN));
+    printf("MIN SUM=%d\n", minSubsequenceSum(seq, LEN));
+    printf("MIN PSUM=%d\n", minPosSubsequenceSum(seq, LEN));
+    printf("MAX MUL=%d\n", maxSubsequenceMul(seq, LEN));
 
     return 0 ;
 }
