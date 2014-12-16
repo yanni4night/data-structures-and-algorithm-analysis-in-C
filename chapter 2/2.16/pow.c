@@ -11,12 +11,12 @@ int _pow1(int N,int M){
 
 //循环求幂
 int _pow2(int N,int M){
-    int pw = 1 ;
+    int pw = 1 , n = N;
      while (M > 0) {
-        if (M & 1)
-            pw *= N;
-        N *= N;
-        M >>= 1;
+        if (M & 1) // M%2
+            pw *= n;
+        n *= n;
+        M >>= 1; // M/=2
     }
 
     return pw;
@@ -27,11 +27,11 @@ int main(int argc, char* argv[])
 {
     int N = 10, M = 5;
 
-    if(2 == argc){
+    if(2 <= argc){
         N = atoi(argv[1]);
-    }else if(argc > 2){
-        N = atoi(argv[1]);
-        M = atoi(argv[2]);
+        if(2 < argc){
+            M = atoi(argv[2]);
+        }
     }
 
     printf("pow(%d,%d)=%d\n", N, M, _pow1(N, M));
